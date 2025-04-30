@@ -1,0 +1,40 @@
+SELECT a.athlete_name
+FROM ATHLETE a
+JOIN GYM g ON a.gym_home = g.gym_id
+JOIN LOCATION l ON g.location_id = l.location_id
+JOIN CITY c ON l.city_id = c.city_id
+WHERE c.city_name = 'Los Angeles';
+
+SELECT s.state_name, COUNT(cs.competition_id) AS total_competitions
+FROM COMPETITION_SCHEDULE cs
+JOIN GYM g ON cs.gym_id = g.gym_id
+JOIN LOCATION l ON g.location_id = l.location_id
+JOIN STATE s ON l.state_id = s.state_id
+GROUP BY s.state_name;
+
+SELECT a.athlete_name, SUM(ll.weight_pounds) AS total_weight
+FROM LIFT_LOG ll
+JOIN ATHLETE a ON ll.athlete_id = a.athlete_id
+GROUP BY a.athlete_name
+ORDER BY total_weight DESC
+LIMIT 5;
+
+JOIN ATHLETE a ON wc.class_id = a.class_id
+JOIN GYM g ON a.gym_home = g.gym_id
+JOIN LOCATION l ON g.location_id = l.location_id
+JOIN STATE s ON l.state_id = s.state_id
+WHERE s.state_name = 'California'
+GROUP BY wc.class_name
+ORDER BY total_athletes DESC
+LIMIT 1;
+
+SELECT e.exercise_name, AVG(ll.weight_pounds) AS avg_weight
+FROM EXERCISE e
+JOIN LIFT_LOG ll ON e.id = ll.exercise_id
+GROUP BY e.exercise_name;
+
+SELECT a.athlete_name, COUNT(DISTINCT a.gym_home) AS gym_count
+FROM ATHLETE a
+JOIN GYM g ON a.gym_home = g.gym_id
+GROUP BY a.athlete_name
+HAVING gym_count > 3;
